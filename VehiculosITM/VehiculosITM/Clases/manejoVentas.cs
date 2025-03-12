@@ -5,98 +5,98 @@ using System.Linq;
 using System.Web;
 using VehiculosITM.Models;
 
-namespace VehiculosITM.Clases
+namespace VehiculoesITM.Clases
 {
-	public class ManejoVentas
+	public class ManejoVehiculoes
 	{
         private Vehiculos_ITMEntities2 dbVehiculo = new Vehiculos_ITMEntities2();
 
-        public string Ingresar(Venta venta)
+        public string Ingresar(Vehiculo vehiculo)
         {
             try
             {
-                dbVehiculo.Ventas.Add(venta);
+                dbVehiculo.Vehiculoes.Add(vehiculo);
                 dbVehiculo.SaveChanges();
-                return "Venta ingresada correctamente";
+                return "Vehiculo ingresado correctamente";
             }
 
             catch (Exception ex)
             {
-                return "error al ingresar la Venta: " + ex.Message;
+                return "error al ingresar el Vehiculo: " + ex.Message;
 
             }
         }
-        public List<Venta> ConsultarTodos()
+        public List<Vehiculo> ConsultarTodos()
         {
-            return dbVehiculo.Ventas.ToList();
+            return dbVehiculo.Vehiculoes.ToList();
 
         }
-        public Venta Consultarxid(int id)
+        public Vehiculo Consultarxid(int id)
         {
-            return dbVehiculo.Ventas.FirstOrDefault(e => e.id_venta == id); //consulta una Venta por su id
+            return dbVehiculo.Vehiculoes.FirstOrDefault(e => e.id_vehiculo == id); //consulta una Vehiculo por su id
                                                                              //retorna la vent consultado
 
         }
-        public string Actualizar(Venta venta)
+        public string Actualizar(Vehiculo vehiculo)
         {
 
-            Venta ven = dbVehiculo.Ventas.FirstOrDefault(e => e.id_venta == venta.id_venta);
+            Vehiculo veh = dbVehiculo.Vehiculoes.FirstOrDefault(e => e.id_vehiculo == vehiculo.id_vehiculo);
             try
             {
 
-                if (ven == null)
+                if (veh == null)
                 {
 
-                    return "La venta no existe";
+                    return "El Vehiculo no existe";
                 }
-                dbVehiculo.Ventas.AddOrUpdate(venta);
+                dbVehiculo.Vehiculoes.AddOrUpdate(vehiculo);
                 dbVehiculo.SaveChanges(); 
-                return "venta  actualizada correctamente"; 
+                return "Vehiculo  actualizado correctamente"; 
 
 
             }
             catch (Exception ex)
             {
-                return "error al actualizar la venta: " + ex.Message; //retorna un mensaje de error
+                return "error al actualizar el Vehiculo: " + ex.Message; //retorna un mensaje de error
 
             }
 
         }
-        public string Eliminar(Venta venta)
+        public string Eliminar(Vehiculo vehiculo)
         {
 
             try
             {
-                Venta ven = dbVehiculo.Ventas.FirstOrDefault(e => e.id_venta == venta.id_venta);
-                if (ven == null)
+                Vehiculo veh = dbVehiculo.Vehiculoes.FirstOrDefault(e => e.id_vehiculo == vehiculo.id_vehiculo);
+                if (veh == null)
                 {
-                    return "La venta no existe";
+                    return "La Vehiculo no existe";
                 }
-                dbVehiculo.Ventas.Remove(ven);
+                dbVehiculo.Vehiculoes.Remove(veh);
                 dbVehiculo.SaveChanges();
-                return "Venta eliminada exitosamente";
+                return "Vehiculo eliminado exitosamente";
             }
             catch (Exception ex)
             {
-                return "error al eliminar la venta " + ex.Message;
+                return "error al eliminar el Vehiculo " + ex.Message;
             }
         }
         public string eliminarxid(int id)
         {
             try
             {
-                Venta ven = dbVehiculo.Ventas.FirstOrDefault(e => e.id_venta == id);
-                if (ven == null)
+                Vehiculo veh = dbVehiculo.Vehiculoes.FirstOrDefault(e => e.id_vehiculo == id);
+                if (veh == null)
                 {
-                    return "La venta no existe";
+                    return "La Vehiculo no existe";
                 }
-                dbVehiculo.Ventas.Remove(ven);
+                dbVehiculo.Vehiculoes.Remove(veh);
                 dbVehiculo.SaveChanges();
-                return "Venta eliminada correctamente";
+                return "Vehiculo eliminado correctamente";
             }
             catch (Exception ex)
             {
-                return "error al eliminar la venta " + ex.Message;
+                return "error al eliminar el Vehiculo " + ex.Message;
             }
 
         }
