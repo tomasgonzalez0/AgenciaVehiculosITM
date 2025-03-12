@@ -11,21 +11,46 @@ namespace VehiculoesITM.Clases
 	{
         private Vehiculos_ITMEntities2 dbVehiculo = new Vehiculos_ITMEntities2();
 
+        //public string Ingresar(Vehiculo vehiculo)
+        //{
+        //    try
+        //    {
+        //        dbVehiculo.Vehiculoes.Add(vehiculo);
+        //        dbVehiculo.SaveChanges();
+        //        return "Vehiculo ingresado correctamente";
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        return "error al ingresar el Vehiculo: " + ex.Message;
+
+        //    }
+        //}
         public string Ingresar(Vehiculo vehiculo)
         {
-            try
+            var marcaExistente = dbVehiculo.Marcas.Any(m => m.id_marca == vehiculo.id_marca); //verifica si la marca existe
+
+            if (!marcaExistente)
             {
-                dbVehiculo.Vehiculoes.Add(vehiculo);
-                dbVehiculo.SaveChanges();
-                return "Vehiculo ingresado correctamente";
+                return "Error: La marca especificada no existe."; //retorna un mensaje de error
+            }
+            if (string.IsNullOrWhiteSpace(vehiculo.motor) ||
+                string.IsNullOrWhiteSpace(vehiculo.tipo_combustible) ||
+                vehiculo.numero_puertas <= 0)
+            {
+                return "Error: Información obligatoria incompleta.";
+            }
+            if (string.IsNullOrWhiteSpace(vehiculo.modelo) || vehiculo.modelo.Length > 50)
+            {
+                return "Error: El modelo del vehículo es inválido.";
             }
 
-            catch (Exception ex)
-            {
-                return "error al ingresar el Vehiculo: " + ex.Message;
+            dbVehiculo.Vehiculoes.Add(vehiculo);
+            dbVehiculo.SaveChanges();
 
-            }
+            return "Vehículo ingresado correctamente.";
         }
+
         public List<Vehiculo> ConsultarTodos()
         {
             return dbVehiculo.Vehiculoes.ToList();
@@ -41,6 +66,10 @@ namespace VehiculoesITM.Clases
         {
 
             Vehiculo veh = dbVehiculo.Vehiculoes.FirstOrDefault(e => e.id_vehiculo == vehiculo.id_vehiculo);
+            var marcaExistente = dbVehiculo.Marcas.Any(m => m.id_marca == vehiculo.id_marca); //verifica si la marca existe
+
+    
+
             try
             {
 
@@ -49,6 +78,21 @@ namespace VehiculoesITM.Clases
 
                     return "El Vehiculo no existe";
                 }
+                if (!marcaExistente)
+                {
+                    return "Error: La marca especificada no existe."; //retorna un mensaje de error
+                }
+                if (string.IsNullOrWhiteSpace(vehiculo.motor) ||
+                    string.IsNullOrWhiteSpace(vehiculo.tipo_combustible) ||
+                    vehiculo.numero_puertas <= 0)
+                {
+                    return "Error: Información obligatoria incompleta.";
+                }
+                if (string.IsNullOrWhiteSpace(vehiculo.modelo) || vehiculo.modelo.Length > 50)
+                {
+                    return "Error: El modelo del vehículo es inválido.";
+                }
+
                 dbVehiculo.Vehiculoes.AddOrUpdate(vehiculo);
                 dbVehiculo.SaveChanges(); 
                 return "Vehiculo  actualizado correctamente"; 
@@ -70,7 +114,7 @@ namespace VehiculoesITM.Clases
                 Vehiculo veh = dbVehiculo.Vehiculoes.FirstOrDefault(e => e.id_vehiculo == vehiculo.id_vehiculo);
                 if (veh == null)
                 {
-                    return "La Vehiculo no existe";
+                    return "El Vehiculo no existe";
                 }
                 dbVehiculo.Vehiculoes.Remove(veh);
                 dbVehiculo.SaveChanges();
@@ -88,7 +132,7 @@ namespace VehiculoesITM.Clases
                 Vehiculo veh = dbVehiculo.Vehiculoes.FirstOrDefault(e => e.id_vehiculo == id);
                 if (veh == null)
                 {
-                    return "La Vehiculo no existe";
+                    return "El Vehiculo no existe";
                 }
                 dbVehiculo.Vehiculoes.Remove(veh);
                 dbVehiculo.SaveChanges();
